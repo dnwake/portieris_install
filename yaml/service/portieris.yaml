@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    meta.helm.sh/release-name: portieris
+    meta.helm.sh/release-namespace: portieris
+  creationTimestamp: "2021-10-22T09:55:42Z"
+  labels:
+    app: portieris
+    app.kubernetes.io/managed-by: Helm
+    chart: portieris-v0.12.0
+    heritage: Helm
+    release: portieris
+  name: portieris
+  namespace: portieris
+  resourceVersion: "166039"
+  selfLink: /api/v1/namespaces/portieris/services/portieris
+  uid: 4f4785c1-31e7-4cc3-a6dd-8b49207afa8a
+spec:
+  clusterIP: 10.96.176.82
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 8000
+  - name: metrics
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: portieris
+    release: portieris
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

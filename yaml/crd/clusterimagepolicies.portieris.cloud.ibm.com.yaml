@@ -1,0 +1,134 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: "2021-10-21T22:53:02Z"
+  generation: 1
+  labels:
+    app: portieris
+  name: clusterimagepolicies.portieris.cloud.ibm.com
+  resourceVersion: "45742"
+  selfLink: /apis/apiextensions.k8s.io/v1/customresourcedefinitions/clusterimagepolicies.portieris.cloud.ibm.com
+  uid: 869f5434-b7a9-467f-926a-a546ed0bab09
+spec:
+  conversion:
+    strategy: None
+  group: portieris.cloud.ibm.com
+  names:
+    kind: ClusterImagePolicy
+    listKind: ClusterImagePolicyList
+    plural: clusterimagepolicies
+    singular: clusterimagepolicy
+  scope: Cluster
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              repositories:
+                items:
+                  properties:
+                    name:
+                      type: string
+                    policy:
+                      properties:
+                        mutateImage:
+                          type: boolean
+                        simple:
+                          properties:
+                            requirements:
+                              items:
+                                properties:
+                                  keySecret:
+                                    type: string
+                                  keySecretNamespace:
+                                    type: string
+                                  signedIdentity:
+                                    properties:
+                                      dockerReference:
+                                        type: string
+                                      dockerRepository:
+                                        type: string
+                                      prefix:
+                                        type: string
+                                      signedPrefix:
+                                        type: string
+                                      type:
+                                        enum:
+                                        - ""
+                                        - matchExact
+                                        - matchRepository
+                                        - matchExactReference
+                                        - matchExactRepository
+                                        - remapIdentity
+                                        type: string
+                                    required:
+                                    - type
+                                    type: object
+                                  type:
+                                    enum:
+                                    - insecureAcceptAnything
+                                    - reject
+                                    - signedBy
+                                    type: string
+                                required:
+                                - type
+                                type: object
+                              nullable: true
+                              type: array
+                            storeSecret:
+                              type: string
+                            storeURL:
+                              type: string
+                          type: object
+                        trust:
+                          properties:
+                            enabled:
+                              type: boolean
+                            signerSecrets:
+                              items:
+                                properties:
+                                  name:
+                                    type: string
+                                type: object
+                              type: array
+                            trustServer:
+                              type: string
+                          type: object
+                        vulnerability:
+                          properties:
+                            ICCRVA:
+                              properties:
+                                account:
+                                  type: string
+                                enabled:
+                                  type: boolean
+                              type: object
+                          type: object
+                      type: object
+                  type: object
+                type: array
+            type: object
+        type: object
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ClusterImagePolicy
+    listKind: ClusterImagePolicyList
+    plural: clusterimagepolicies
+    singular: clusterimagepolicy
+  conditions:
+  - lastTransitionTime: "2021-10-21T22:53:02Z"
+    message: no conflicts found
+    reason: NoConflicts
+    status: "True"
+    type: NamesAccepted
+  - lastTransitionTime: "2021-10-21T22:53:02Z"
+    message: the initial names have been accepted
+    reason: InitialNamesAccepted
+    status: "True"
+    type: Established
+  storedVersions:
+  - v1

@@ -1,0 +1,52 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  annotations:
+    helm.sh/hook: post-install,post-upgrade,post-rollback
+  creationTimestamp: "2021-10-22T09:55:42Z"
+  generation: 1
+  labels:
+    app: portieris
+    chart: portieris-v0.12.0
+    heritage: Helm
+    release: portieris
+  name: image-admission-config
+  resourceVersion: "166072"
+  selfLink: /apis/admissionregistration.k8s.io/v1/mutatingwebhookconfigurations/image-admission-config
+  uid: 7df58885-5f71-4f99-bec0-38975dccc838
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNyRENDQVpRQ0NRRFQrUTZGeXF3SUJqQU5CZ2txaGtpRzl3MEJBUXNGQURBWE1SVXdFd1lEVlFRRERBeHcKYjNKMGFXVnlhWE5mWTJFd0lCY05NakV4TURJeU1EazFOVFF3V2hnUE1qSTVOVEE0TURjd09UVTFOREJhTUJjeApGVEFUQmdOVkJBTU1ESEJ2Y25ScFpYSnBjMTlqWVRDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDCkFRb0NnZ0VCQUxCdWNrK2g0VTFtNFRBL2ZsU0twNTcxdTJqNUo2UUg4T2J4a1R2RWhJWmlnV1B3UmNXcldTeTMKMmIwNVNFTTNEeFptR3JGSXJicHRPS2pZNDRyV0lCVGlxcEF1M2JGN2JPOE1uMkNRYjBBY3IwOU1EQy9aY3RmUQpTVGt5K3pnSW8yL2xhNU1aQytVZlVlVXlzS25iWC8xbnc2R1p3QTh3RStkb3JqMWJFNGpybmFQV05DbFdkUnlhCjR6dEliek9wNStJejVqWDBuMkFxTHd4MzMvVndybVM2RHJwNW5SQmM2Sko1QkJNVlE2alh2WFBsa0VBazNMOGYKNjIxeDhwMi9SZlFTMWtPVmFXV2RYUDN4UUErbkdMMzZiZ3NQaUl0QmMzNUZSOTljZ2tPUjBueUFQTlBTQU40WgpmRDlIVjE1Q1NTMEppdWJqZlNqdXdwRjZXK2k3Q3FzQ0F3RUFBVEFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBClhhc1BKWmN5NHBzMXlnbGdaTjdOSUFDT0Z2ZHRBN25kQ3VCL0FqZlRoY2YyM2lWcnZES3UwZ0lTdStGT1RyK3MKZ0Izd04wRFRoZmluU0EvWjkzemhaOWVXREZFQWlhUEx5b3FjaE11UVhVYUY2VERCUUFHdGJUeHNCVWJvVEZKTApURXpnd2YrQ2dieHA4dngwMXE0WXdBRjlWdFVyOVV4ZkdkU0pWVHlNeDBpOGFDZkZ3ejQ4Vm0wQzdDOGNubmsrCmZCVmpLZi9iZzlKb3BpYXBtWGdiQ1BjbGhCdzZsMnZ4NkJvK3IwRmI3Y3ZtOGhVV1h2Qnc4Z0ZRSWtVV3RYbksKMnNvaEdZVzJ5OHR3NHhTRExNZzk2YXNBcWRPVlprQklRRU9JdExobjR6SEEvS3dqSDRrMXc0M3Q1Z09BdmhidQpzSlJJNXNaWUJtdWdVaGErTVRJb1JnPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+    service:
+      name: portieris
+      namespace: portieris
+      path: /admit
+      port: 443
+  failurePolicy: Fail
+  matchPolicy: Equivalent
+  name: trust.hooks.securityenforcement.admission.cloud.ibm.com
+  namespaceSelector: {}
+  objectSelector: {}
+  reinvocationPolicy: Never
+  rules:
+  - apiGroups:
+    - '*'
+    apiVersions:
+    - '*'
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pods
+    - deployments
+    - replicationcontrollers
+    - replicasets
+    - daemonsets
+    - statefulsets
+    - jobs
+    - cronjobs
+    scope: '*'
+  sideEffects: None
+  timeoutSeconds: 10

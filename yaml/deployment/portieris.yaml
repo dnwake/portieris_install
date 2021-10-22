@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+    meta.helm.sh/release-name: portieris
+    meta.helm.sh/release-namespace: portieris
+  creationTimestamp: "2021-10-22T09:55:42Z"
+  generation: 1
+  labels:
+    app: portieris
+    app.kubernetes.io/managed-by: Helm
+    chart: portieris-v0.12.0
+    heritage: Helm
+    release: portieris
+  name: portieris
+  namespace: portieris
+  resourceVersion: "166175"
+  selfLink: /apis/apps/v1/namespaces/portieris/deployments/portieris
+  uid: 8f620170-0ea5-4485-9b22-b2cc2989611e
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: portieris
+      release: portieris
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: "8080"
+        prometheus.io/scrape: "true"
+      creationTimestamp: null
+      labels:
+        app: portieris
+        release: portieris
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - portieris
+              topologyKey: kubernetes.io/hostname
+            weight: 50
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - portieris
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+            weight: 50
+      containers:
+      - image: icr.io/portieris/portieris:v0.12.0
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health/liveness
+            port: 8000
+            scheme: HTTPS
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        name: portieris
+        ports:
+        - containerPort: 80
+          name: http
+          protocol: TCP
+        - containerPort: 8080
+          name: metrics-port
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health/readiness
+            port: 8000
+            scheme: HTTPS
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
+        resources:
+          limits:
+            cpu: 400m
+            memory: 600Mi
+          requests:
+            cpu: 40m
+            memory: 60Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/certs
+          name: portieris-certs
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      priorityClassName: system-cluster-critical
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        runAsUser: 1000060001
+      serviceAccount: portieris
+      serviceAccountName: portieris
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: portieris-certs
+        secret:
+          defaultMode: 420
+          secretName: portieris-certs
+status:
+  availableReplicas: 3
+  conditions:
+  - lastTransitionTime: "2021-10-22T09:56:01Z"
+    lastUpdateTime: "2021-10-22T09:56:01Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2021-10-22T09:55:42Z"
+    lastUpdateTime: "2021-10-22T09:56:01Z"
+    message: ReplicaSet "portieris-65d4b86df5" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 1
+  readyReplicas: 3
+  replicas: 3
+  updatedReplicas: 3

@@ -1,0 +1,28 @@
+apiVersion: v1
+items:
+- apiVersion: portieris.cloud.ibm.com/v1
+  kind: ImagePolicy
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"portieris.cloud.ibm.com/v1","kind":"ImagePolicy","metadata":{"annotations":{},"name":"pinned-notary-server","namespace":"default"},"spec":{"repositories":[{"name":"*","policy":{"trust":{"enabled":true,"signerSecrets":[{"name":"delegation-pubkey"}],"trustServer":"https://notaryserver.jfrog.com:443"}}}]}}
+    creationTimestamp: "2021-10-22T09:55:44Z"
+    generation: 1
+    name: pinned-notary-server
+    namespace: default
+    resourceVersion: "166105"
+    selfLink: /apis/portieris.cloud.ibm.com/v1/namespaces/default/imagepolicies/pinned-notary-server
+    uid: 2b3fa2d5-bf9c-47d0-99bb-684fcaba1815
+  spec:
+    repositories:
+    - name: '*'
+      policy:
+        trust:
+          enabled: true
+          signerSecrets:
+          - name: delegation-pubkey
+          trustServer: https://notaryserver.jfrog.com:443
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
